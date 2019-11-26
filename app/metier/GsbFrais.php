@@ -266,7 +266,7 @@ public function getInfosVisiteur($login, $mdp){
 	/**
 	 * Mise à jour des informations dans la base de données à partir de l'id
 	*/
-	public function modifInfos($idVisiteur, $ville, $cp, $adresse){
+	public function modifInfos($idVisiteur,$adresse, $cp, $ville){
 		$req = "update visiteur set adresse = :adresse, cp = :cp, ville = :ville where visiteur.id = :id";
 		DB::update($req, ['id'=>$idVisiteur, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville]);
 	}

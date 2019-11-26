@@ -27,7 +27,7 @@ class modifInfosController extends Controller
      */
     public function verifInfos(Request $request){
         $this->validate($request,[
-            'adresse'=>'bail|required|digits:2|alpha',
+            'adresse'=>'bail|required',
             'cp'=>'bail|required|digits:5',
             'ville'=>'bail|required|between:2,30|alpha'
         ]);
@@ -36,7 +36,8 @@ class modifInfosController extends Controller
         $cp = $request->input('cp');
         $ville = $request->input('ville');
         $idVisiteur = Session::get('id');
-        $info = $gsbFrais->getUpdateInfosPerso($idVisiteur);
+        $gsbFrais = new GsbFrais();
+        $info = $gsbFrais->modifInfos($idVisiteur, $adresse, $cp, $ville);
         //confirmmer la mise à jour
         return view ('confirmModifInfos');
 
