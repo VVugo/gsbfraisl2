@@ -58,8 +58,3 @@ Route::get('getRetour/{retour}', function($retour){
     return redirect("/".$retour);
 });
 
-//modifierInfos
-Route::get('/modifInfos', 'modifInfosController@affFormModifInfos');
-
-//modifierInfos
-Route::post('/modifInfos', 'modifInfosController@verifInfos');

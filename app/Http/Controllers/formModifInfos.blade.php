@@ -17,17 +17,6 @@
                  </div> 
         </div>
         <div class="form-group">
-            <label class="col-md-3 control-label">adresse : </label>
-            <div class="col-md-6 col-md-3">
-                <input type="text" name="adresse" ng-model="adresse" class="form-control" placeholder="Votre adresse" maxlength="30"  value="{{isset($errors) && count($errors) > 0 ? old('adresse'): $info->adresse}}" required>
-                @if($errors->has('adresse'))
-                <div class="alert alert-danger">
-                    {{ $errors->first('adresse') }}
-                </div>
-                @endif
-            </div>  
-        </div>   
-        <div class="form-group">
             <label class="col-md-3 control-label">ville : </label>
             <div class="col-md-6 col-md-3">
                 <input type="text" name="ville" ng-model="ville" class="form-control" placeholder="Votre ville" maxlength="30" pattern ="^[a-zéèàêâùïüëA-Z][a-zéèàêâùïüëA-Z-'\s]{1,29}$" value="{{isset($errors) && count($errors) > 0 ? old('ville'): $info->ville}}" required>
