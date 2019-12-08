@@ -17,7 +17,7 @@ class GsbFrais{
 public function getInfosVisiteur($login, $mdp){
         $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
         where visiteur.login=:login and visiteur.mdp=:mdp";
-        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
+        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>sha1($mdp)]);
         return $ligne;
 }
 /**
@@ -258,7 +258,7 @@ public function getInfosVisiteur($login, $mdp){
  * @return la ville et le cp sous la forme d'un objet 
  */
 	public function getInfosPerso($id){
-		$req = "select adresse, cp, ville from visiteur where visiteur.id=:id";
+		$req = "select * from visiteur where visiteur.id=:id";
 		$ligne = DB::select($req, ['id'=>$id]);
 		return $ligne[0];
 	}
@@ -269,6 +269,22 @@ public function getInfosVisiteur($login, $mdp){
 	public function modifInfos($idVisiteur,$adresse, $cp, $ville){
 		$req = "update visiteur set adresse = :adresse, cp = :cp, ville = :ville where visiteur.id = :id";
 		DB::update($req, ['id'=>$idVisiteur, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville]);
+	}
+
+	/**
+	*	Mise à jour du mot de passe dans la base de données à partir de l'id
+	*/
+	public function modifMdp($idVisiteur,$newMdp){
+		$req = "update visiteur set mdp = :mdp where visiteur.id = :id";
+		DB::update($req, ['id'=>$idVisiteur, 'mdp'=>sha1($newMdp)]);
+	}
+
+	/**
+	 * Retourne toute les informations d'un utilisateur
+	 */
+	public function getUtilisateur($idVisiteur){
+		$req = "select DISTINCT * from visiteur inner join travailler on travailler.idvisiteur = visiteur.id inner join region on travailler.tra_reg = region.id inner join secteur on region.sec_code = secteur.id group by visiteur.id having visiteur.id = :idVisiteur";
+		DB::select($req, ['idVisiteur'=>$idVisiteur]);
 	}
 }
 

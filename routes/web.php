@@ -63,3 +63,10 @@ Route::get('/modifInfos', 'modifInfosController@affFormModifInfos');
 
 //modifierInfos
 Route::post('/modifInfos', 'modifInfosController@verifInfos');
+
+//modifierMdp
+Route::get('/modifMdp', 'modifMdpController@affFormModifMdp');
+
+//modifierMdp
+Route::post('/modifMdp', 'modifMdpController@verifMdp');
+
