@@ -32,6 +32,7 @@ class modifInfosController extends Controller
             'ville'=>'bail|required|between:2,30|alpha'
         ]);
         // récuperer les données pour mettre à jour la base
+        
         $adresse = $request->input('adresse');
         $cp = $request->input('cp');
         $ville = $request->input('ville');

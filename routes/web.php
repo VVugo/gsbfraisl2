@@ -70,3 +70,8 @@ Route::get('/modifMdp', 'modifMdpController@affFormModifMdp');
 //modifierMdp
 Route::post('/modifMdp', 'modifMdpController@verifMdp');
 
+//creerVisiteur
+Route::get('/creerVisiteur', 'creerVisiteurController@affFormCreerVisiteur');
+
+//creerVisiteur
+Route::post('/creerVisiteur', 'creerVisiteurController@verifVisiteur');

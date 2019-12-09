@@ -286,6 +286,12 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "select DISTINCT * from visiteur inner join travailler on travailler.idvisiteur = visiteur.id inner join region on travailler.tra_reg = region.id inner join secteur on region.sec_code = secteur.id group by visiteur.id having visiteur.id = :idVisiteur";
 		DB::select($req, ['idVisiteur'=>$idVisiteur]);
 	}
+
+	public function creerVisiteur($nom, $prenom, $login, $mdp, $adresse, $cp, $ville, $dateEmbauche, $tel, $email)
+	{
+		$req = "INSERT INTO visiteur VALUES ('0', :nom, :prenom, :login, :mdp, :adresse, :cp, :ville, :dateEmbauche, :tel, :email)";
+		DB::select($req, ['nom'=>$nom, 'prenom'=>$prenom, 'login'=>$login, 'mdp'=>$mdp, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville, 'dateEmbauche'=>$dateEmbauche, 'tel'=>$tel, 'email'=>$email,]);
+	}
 }
 
 
