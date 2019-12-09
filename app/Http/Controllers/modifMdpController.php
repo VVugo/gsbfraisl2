@@ -15,12 +15,7 @@ class modifMdpController extends Controller
      */
     public function affFormModifMdp() {
         $erreur = "";
-        $idVisiteur = Session::get('id');
-        $gsbFrais = new GsbFrais();
-        $info = $gsbFrais->getInfosPerso($idVisiteur);
-        // Affiche le formulaire en lui fournissant les données à afficher
-        // la fonction compact équivaut à array('lesFrais' => $lesFrais, ...) 
-        return view('formModifMdp', compact('info', 'erreur'));
+        return view('formModifMdp', compact('erreur'));
     }
     /**
      * Enregistre les modifications des informations personnelles
@@ -54,7 +49,7 @@ class modifMdpController extends Controller
             }
             else{
                 //le mot de passe confirmé ne correspond pas au nouveau mot de passe
-                $erreur = "Le mot de passe confirmé n'est pas identique";
+                $erreur = "le mot de passe confirmé ne correspond pas au nouveau mot de passe";
                 return back()->with('erreur',$erreur);
             }
         }

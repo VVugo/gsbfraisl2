@@ -17,7 +17,7 @@ class GsbFrais{
 public function getInfosVisiteur($login, $mdp){
         $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
         where visiteur.login=:login and visiteur.mdp=:mdp";
-        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>sha1($mdp)]);
+        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
         return $ligne;
 }
 /**
@@ -262,7 +262,15 @@ public function getInfosVisiteur($login, $mdp){
 		$ligne = DB::select($req, ['id'=>$id]);
 		return $ligne[0];
 	}
-
+	/**
+	* Récupère le rôle du visiteur
+	* @param $region
+	*/
+	public function getRegion($idVisiteur){
+		$req = "select tra_role from visiteur inner join travailler on travailler.idVisiteur = visiteur.id where visiteur.id =:idVisiteur";
+		$ligne = DB::select($req, ['idVisiteur'=>$idVisiteur]);
+		return $ligne[0];
+	}
 	/**
 	 * Mise à jour des informations dans la base de données à partir de l'id
 	*/
@@ -282,9 +290,10 @@ public function getInfosVisiteur($login, $mdp){
 	/**
 	 * Retourne toute les informations d'un utilisateur
 	 */
-	public function getUtilisateur($idVisiteur){
-		$req = "select DISTINCT * from visiteur inner join travailler on travailler.idvisiteur = visiteur.id inner join region on travailler.tra_reg = region.id inner join secteur on region.sec_code = secteur.id group by visiteur.id having visiteur.id = :idVisiteur";
-		DB::select($req, ['idVisiteur'=>$idVisiteur]);
+	public function getUtilisateur($id){
+		$req = "select * from visiteur inner join travailler on travailler.idVisiteur = visiteur.id INNER join region on region.id = travailler.tra_reg inner join secteur on secteur.id = region.sec_code where visiteur.id= :id";
+		$ligne = DB::select($req, ['id'=>$id]);
+		return $ligne[0];
 	}
 
 	public function creerVisiteur($nom, $prenom, $login, $mdp, $adresse, $cp, $ville, $dateEmbauche, $tel, $email)
@@ -292,6 +301,10 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "INSERT INTO visiteur VALUES ('0', :nom, :prenom, :login, :mdp, :adresse, :cp, :ville, :dateEmbauche, :tel, :email)";
 		DB::select($req, ['nom'=>$nom, 'prenom'=>$prenom, 'login'=>$login, 'mdp'=>$mdp, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville, 'dateEmbauche'=>$dateEmbauche, 'tel'=>$tel, 'email'=>$email,]);
 	}
+	//public function modifEtat($idVisiteur,$newEtat){
+		//$req = "update idEtat set idEtat = VA";
+	//	DB::select($req, ['idVisiteur'=>$idVisiteur, 'idEtat'=>$newEtat]);
+	//}
 }
 
 

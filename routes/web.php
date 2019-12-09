@@ -75,3 +75,5 @@ Route::get('/creerVisiteur', 'creerVisiteurController@affFormCreerVisiteur');
 
 //creerVisiteur
 Route::post('/creerVisiteur', 'creerVisiteurController@verifVisiteur');
+//info Utilisateur
+Route::get('/infosUtilisateur', 'listeInfosController@affListeInfos');
