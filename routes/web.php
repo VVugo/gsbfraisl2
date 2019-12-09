@@ -70,3 +70,5 @@ Route::get('/modifMdp', 'modifMdpController@affFormModifMdp');
 //modifierMdp
 Route::post('/modifMdp', 'modifMdpController@verifMdp');
 
+//info Utilisateur
+Route::get('/infosUtilisateur', 'listeInfosController@affListeInfos');
