@@ -17,7 +17,7 @@ class GsbFrais{
 public function getInfosVisiteur($login, $mdp){
         $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
         where visiteur.login=:login and visiteur.mdp=:mdp";
-        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>sha1($mdp)]);
+        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
         return $ligne;
 }
 /**
@@ -286,6 +286,11 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "select DISTINCT * from visiteur inner join travailler on travailler.idvisiteur = visiteur.id inner join region on travailler.tra_reg = region.id inner join secteur on region.sec_code = secteur.id group by visiteur.id having visiteur.id = :idVisiteur";
 		DB::select($req, ['idVisiteur'=>$idVisiteur]);
 	}
+
+	//public function modifEtat($idVisiteur,$newEtat){
+		//$req = "update idEtat set idEtat = VA";
+	//	DB::select($req, ['idVisiteur'=>$idVisiteur, 'idEtat'=>$newEtat]);
+	//}
 }
 
 

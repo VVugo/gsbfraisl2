@@ -45,8 +45,20 @@ class FraisForfaitController extends Controller
         $gsbFrais = new GsbFrais();
         $gsbFrais->majFraisForfait($idVisiteur, $mois, $lesFrais);
 //         Retourne à la liste des des Frais return 
+        
          return redirect()->back()->with('status', 'Mise à jour effectuée!');
     }
+
+    /*public function validerFicheFrais(Request $request){
+        $etat = $request->input('idEtat');
+        $newEtat = $request->input('newEtat');
+
+        $idVisiteur = Session::get('id');
+        $gsbFrais = new GsbFrais();
+
+        $info = $gsbFrais->modifMdp($idVisiteur, $newEtat);
+
+    }*/
 
   
 }

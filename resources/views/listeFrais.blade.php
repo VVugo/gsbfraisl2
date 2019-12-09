@@ -11,7 +11,8 @@
                     <th style="width:20%">Période</th> 
                     <th style="width:20%">Nb justificatifs</th> 
                     <th style="width:20%">Montant valide</th> 
-                    <th style="width:20%">Etat</th> 
+                    <th style="width:20%">Etat</th>  
+                    <th style="width:20%">Date de modification</th> 
                     <th style="width:20%">Détails</th>  
                 </tr>
             </thead>
@@ -21,6 +22,7 @@
                 <td> {{ $unFrais->nbJustificatifs }} </td> 
                 <td> {{ $unFrais->montantValide }} </td> 
                 <td> {{ $unFrais->idEtat }} </td> 
+                <td> {{ $unFrais->dateModif}} </td> 
                 <td style="text-align:center;"><a href="{{ url('/voirDetailFrais') }}/{{ $unFrais->mois }}">
                         <span class="glyphicon glyphicon-eye-open" data-toggle="tooltip" data-placement="top" title="Voir"></span></a></td>
             </tr>
