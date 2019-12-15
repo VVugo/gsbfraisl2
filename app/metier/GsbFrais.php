@@ -15,9 +15,8 @@ class GsbFrais{
  * @return l'id, le nom et le prénom sous la forme d'un objet 
 */
 public function getInfosVisiteur($login, $mdp){
-        $req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
-        where visiteur.login=:login and visiteur.mdp=:mdp";
-        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>$mdp]);
+        $req = "select DISTINCT visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom,travailler.tra_role as role, travailler.tra_date from visiteur inner join travailler on travailler.idVisiteur = visiteur.id INNER join region on region.id = travailler.tra_reg inner join secteur on secteur.id = region.sec_code where visiteur.login=:login and visiteur.mdp=:mdp ORDER by travailler.tra_date DESC LIMIT 1";
+        $ligne = DB::select($req, ['login'=>$login, 'mdp'=>sha1($mdp)]);
         return $ligne;
 }
 /**
@@ -252,25 +251,47 @@ public function getInfosVisiteur($login, $mdp){
 	}
 
 	/**
- * Retourne les informations personnelles d'un visiteur
+ * Retourne les informations personnelles d'un visiteur ou d'un délégué, en fonction de son id
  
  * @param $id 
  * @return la ville et le cp sous la forme d'un objet 
  */
 	public function getInfosPerso($id){
-		$req = "select * from visiteur where visiteur.id=:id";
+		$req = "select v.id, v.nom, v.prenom, v.login, v.mdp, v.adresse, v.cp, v.ville, v.dateEmbauche,v.email,v.tel, t.tra_date,t.tra_role, t.tra_reg, r.sec_code, r.reg_nom, s.sec_nom from visiteur as v inner join travailler as t on t.idVisiteur = v.id INNER join region as r on r.id = t.tra_reg inner join secteur as s on s.id = r.sec_code where v.id =:id ORDER by t.tra_date desc limit 1";
 		$ligne = DB::select($req, ['id'=>$id]);
 		return $ligne[0];
 	}
 	/**
-	* Récupère le rôle du visiteur
-	* @param $region
-	*/
-	public function getRegion($idVisiteur){
-		$req = "select tra_role from visiteur inner join travailler on travailler.idVisiteur = visiteur.id where visiteur.id =:idVisiteur";
-		$ligne = DB::select($req, ['idVisiteur'=>$idVisiteur]);
-		return $ligne[0];
+	 * Récupère les visiteurs et les délégués du même secteur que le responsable connecté
+	 */
+	public function getVisiteurDelegue($id){
+		$req = "select t1.idVisiteur as id, t1.tra_date, nom,prenom,t1.tra_role as role, r.reg_nom as region, tra_reg FROM travailler t1 inner join visiteur v on t1.idVisiteur = v.id inner join region r on r.id = t1.tra_reg WHERE t1.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = t1.idVisiteur)AND t1.tra_role != 'Responsable' AND r.sec_code = (SELECT sec_code from region inner join travailler on travailler.tra_reg = region.id WHERE travailler.idVisiteur =:id order by travailler.tra_date desc limit 1) ORDER BY t1.idVisiteur, t1.tra_date, nom,prenom,role, region";
+		$lignes = DB::select($req, ['id'=>$id]);
+		return $lignes;
 	}
+
+	/**
+	 * Récupère les regions qui sont du même secteur que le visiteur / délégué à l'aide de son id
+	 * Région du même secteur que le visiteur / délégué
+	 */
+	public function getRegions($id){
+		$req = "select * from region where sec_code = (SELECT DISTINCT sec_code from travailler inner join region on region.id = travailler.tra_reg WHERE travailler.idVisiteur = :id order by tra_date DESC LIMIT 1)";
+		$lignes = DB::select($req, ['id'=>$id]);
+		return $lignes;
+	}
+
+	/**
+	 * Met a jour la base de données du visiteur ou délégué avec les infos passés en paramètre en fonction de son id
+	 */
+	public function modifierVisiteurDelegue($id,$region,$role){
+		$req = "update travailler set tra_reg = :region, tra_role = :role, tra_date = Date(now()) where idvisiteur = :id";
+
+		//$req = "insert into travailler(idVisiteur, tra_date,tra_reg,tra_role) VALUES (:id,Date(now()),:region,:role) ON DUPLICATE KEY UPDATE tra_reg =:region , tra_role=:role";
+
+		DB::update($req,['id'=>$id, 'region'=>$region,'role'=>$role]);
+	}
+
+
 	/**
 	 * Mise à jour des informations dans la base de données à partir de l'id
 	*/
@@ -285,15 +306,6 @@ public function getInfosVisiteur($login, $mdp){
 	public function modifMdp($idVisiteur,$newMdp){
 		$req = "update visiteur set mdp = :mdp where visiteur.id = :id";
 		DB::update($req, ['id'=>$idVisiteur, 'mdp'=>sha1($newMdp)]);
-	}
-
-	/**
-	 * Retourne toute les informations d'un utilisateur
-	 */
-	public function getUtilisateur($id){
-		$req = "select * from visiteur inner join travailler on travailler.idVisiteur = visiteur.id INNER join region on region.id = travailler.tra_reg inner join secteur on secteur.id = region.sec_code where visiteur.id= :id";
-		$ligne = DB::select($req, ['id'=>$id]);
-		return $ligne[0];
 	}
 
 	public function creerVisiteur($nom, $prenom, $login, $mdp, $adresse, $cp, $ville, $dateEmbauche, $tel, $email)

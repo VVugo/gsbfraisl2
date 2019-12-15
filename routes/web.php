@@ -75,5 +75,22 @@ Route::get('/creerVisiteur', 'creerVisiteurController@affFormCreerVisiteur');
 
 //creerVisiteur
 Route::post('/creerVisiteur', 'creerVisiteurController@verifVisiteur');
+
+//gerer les visiteurs ou les delegues
+Route::get('/listVisiteurDelegue', 'VoirVisiteurDelegueController@getVisiteurDelegue');
+
+Route::get('/detailInfoVisiteurDelegue/{id}', 'VoirVisiteurDelegueController@detailInfoVisiteurDelegue');
+
+Route::post('/detailInfoVisiteurDelegue/{id}', 'VoirVisiteurDelegueController@modifVisiteurDelegue');
+
 //info Utilisateur
 Route::get('/infosUtilisateur', 'listeInfosController@affListeInfos');
+//page de présentation 
+Route::get('/home', 'listeInfosController@affListeInfos');
+
+
+// Afficher la liste des fiches de Frais du visiteur connecté
+Route::get('/getListeFrais', 'VoirFraisController@getFraisVisiteur');
+
+// Afficher le détail de la fiche de frais pour le mois sélectionné
+Route::get('/voirDetailFrais/{mois}', 'VoirFraisController@voirDetailFrais');

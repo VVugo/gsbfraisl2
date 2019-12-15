@@ -26,7 +26,7 @@ class modifMdpController extends Controller
             'mdp'=>'required',
             
         ]);
-        // récuperer les données pour vérifier si ils existent
+        // récuperer les données pour vérifier si elles existent
         $login = $request->input('login');
         $mdp = $request->input('mdp');
         $newMdp = $request->input('newMdp');
@@ -38,7 +38,7 @@ class modifMdpController extends Controller
         //Récupère les logs de l'utilisateur
         $log = $gsbFrais->getInfosPerso($idVisiteur);
 
-        //Si le login et le mdp du formulaire corresponde au log de l'utilisateur, alors change le mot de  passe
+        //Si le login et le mdp du formulaire correspond au log de l'utilisateur, alors change le mot de  passe
         if($log->login == $login && $log->mdp == sha1($mdp)){
             if($confirmNewMdp == $newMdp){
                 //MàJ du mot de passe dans la base de données

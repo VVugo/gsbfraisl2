@@ -17,7 +17,7 @@ class listeInfosController extends Controller
         $erreur = "";
         $id= Session::get('id');
         $gsbFrais = new GsbFrais();
-        $info = $gsbFrais->getUtilisateur($id);
+        $info = $gsbFrais->getInfosPerso($id);
         // Affiche la page en lui fournissant les données à afficher
         // la fonction compact équivaut à array('lesFrais' => $lesFrais, ...) 
         return view('listeInfosUtilisateur', compact('info', 'erreur'));
