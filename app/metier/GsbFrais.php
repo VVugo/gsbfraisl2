@@ -335,7 +335,10 @@ public function getInfosVisiteur($login, $mdp){
 	 */
 	public function getFraisValide($role, $sql){
 		
-		$req = "Select DISTINCT * from fichefrais INNER JOIN travailler on travailler.idVisiteur = fichefrais.idVisiteur INNER JOIN region on travailler.tra_reg = region.id inner join visiteur on visiteur.id = travailler.idVisiteur where idEtat = 'VA' OR idEtat = 'RB' AND travailler.tra_role = :role ".$sql." and travailler.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = travailler.idVisiteur) order by fichefrais.idVisiteur asc, mois asc";
+		$req = "Select DISTINCT * from fichefrais INNER JOIN travailler on travailler.idVisiteur = fichefrais.idVisiteur INNER JOIN region on travailler.tra_reg = region.id inner join visiteur on visiteur.id = travailler.idVisiteur where idEtat = 'VA' or idEtat = 'RB' AND travailler.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = travailler.idVisiteur AND tra_role = :role) order by fichefrais.idVisiteur asc, mois asc";
+
+		
+		// $req ="Select DISTINCT * from fichefrais INNER JOIN travailler on travailler.idVisiteur = fichefrais.idVisiteur INNER JOIN region on travailler.tra_reg = region.id inner join visiteur on visiteur.id = travailler.idVisiteur where idEtat = 'VA' OR idEtat = 'RB' AND travailler.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = travailler.idVisiteur AND travailler.tra_role = :role) AND travailler.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = travailler.idVisiteur) $sql order by fichefrais.idVisiteur asc, mois asc";
 
 		$lignes = DB::select($req,['role'=>$role]);
 		return $lignes;
