@@ -88,9 +88,16 @@ Route::get('/infosUtilisateur', 'listeInfosController@affListeInfos');
 //page de présentation 
 Route::get('/home', 'listeInfosController@affListeInfos');
 
-
-// Afficher la liste des fiches de Frais du visiteur connecté
-Route::get('/getListeFrais', 'VoirFraisController@getFraisVisiteur');
+// Afficher la liste des fiches de Frais cloturé
+Route::get('/getListeFraisCloture', 'VoirFraisClotureController@getFraisCloture');
 
 // Afficher le détail de la fiche de frais pour le mois sélectionné
-Route::get('/voirDetailFrais/{mois}', 'VoirFraisController@voirDetailFrais');
+Route::get('/voirDetailFraisCloture/{mois}', 'VoirFraisClotureController@voirDetailFrais');
+
+//Valide la fiche de frais
+Route::post('/valideFraisCloture', 'VoirFraisClotureController@valideFraisCloture');
+
+// Afficher la liste des fiches de Frais validé
+Route::get('/getListeFraisValide', 'VoirFraisValideController@getFraisValider');
+// Afficher le détail de la fiche de frais pour l'id et le mois sélectionné
+Route::get('/voirDetailFrais/{id}/{mois}', 'VoirFraisValideController@voirDetailFrais');

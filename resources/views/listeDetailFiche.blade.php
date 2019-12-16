@@ -43,8 +43,7 @@
         </table>
         <div class="form-group">
             <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-                <a href="{{ url($retour)}}" ><button type="button" class="btn btn-default btn-primary" >Retour</button></a>
-                <a href="{{ url($retour)}}" ><button type="button" class="btn btn-primary" onclick="validerFicheFrais()">Valider</button></a>           
+                <a href="{{ url($retour)}}" ><button type="button" class="btn btn-default btn-primary" >Retour</button></a>         
             </div>           
         </div>  
         @if (session('erreur'))

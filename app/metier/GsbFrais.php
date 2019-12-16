@@ -313,10 +313,34 @@ public function getInfosVisiteur($login, $mdp){
 		$req = "INSERT INTO visiteur VALUES ('0', :nom, :prenom, :login, :mdp, :adresse, :cp, :ville, :dateEmbauche, :tel, :email)";
 		DB::select($req, ['nom'=>$nom, 'prenom'=>$prenom, 'login'=>$login, 'mdp'=>$mdp, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville, 'dateEmbauche'=>$dateEmbauche, 'tel'=>$tel, 'email'=>$email,]);
 	}
-	//public function modifEtat($idVisiteur,$newEtat){
-		//$req = "update idEtat set idEtat = VA";
-	//	DB::select($req, ['idVisiteur'=>$idVisiteur, 'idEtat'=>$newEtat]);
-	//}
+	/**
+	 * Récupere la liste des frais forfaits cloturés des visiteurs de la région du délégué
+	 */
+	public function getFraisCloture($role, $sql){
+		$req = "Select * from fichefrais INNER JOIN travailler on travailler.idVisiteur = fichefrais.idVisiteur INNER JOIN region on travailler.tra_reg = region.id inner join visiteur on visiteur.id = travailler.idVisiteur where idEtat = 'CL' AND travailler.tra_role = :role ".$sql." ORDER BY travailler.idVisiteur, mois ASC";
+		$lignes = DB::select($req,['role'=>$role]);
+		return $lignes;
+	}
+
+	/**
+	 * Valide une fiche frais forfait cloture
+	 */
+	public function valideFraisCloture($idVisiteur,$mois,$montanValide){
+		$req = "update fichefrais set idEtat = 'VA', dateModif= Date(now()), montantValide= :montantValide where idVisiteur = :idVisiteur AND mois = :mois";
+		DB::update($req,['idVisiteur'=>$idVisiteur, 'mois'=>$mois, 'montantValide'=>$montanValide]);
+	}
+
+	/**
+	 * Récupere la liste des frais forfaits des visiteurs de la région du délégué
+	 */
+	public function getFraisValide($role, $sql){
+		
+		$req = "Select DISTINCT * from fichefrais INNER JOIN travailler on travailler.idVisiteur = fichefrais.idVisiteur INNER JOIN region on travailler.tra_reg = region.id inner join visiteur on visiteur.id = travailler.idVisiteur where idEtat = 'VA' OR idEtat = 'RB' AND travailler.tra_role = :role ".$sql." and travailler.tra_date IN (SELECT max(t2.tra_date) FROM travailler t2 WHERE t2.idVisiteur = travailler.idVisiteur) order by fichefrais.idVisiteur asc, mois asc";
+
+		$lignes = DB::select($req,['role'=>$role]);
+		return $lignes;
+	}
+
 }
 
 
