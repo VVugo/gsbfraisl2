@@ -308,10 +308,16 @@ public function getInfosVisiteur($login, $mdp){
 		DB::update($req, ['id'=>$idVisiteur, 'mdp'=>sha1($newMdp)]);
 	}
 
-	public function creerVisiteur($nom, $prenom, $login, $mdp, $adresse, $cp, $ville, $dateEmbauche, $tel, $email)
+	public function creerVisiteur($idVisiteur, $nom, $prenom, $adresse, $cp, $ville, $dateEmbauche, $tel, $email)
 	{
-		$req = "INSERT INTO visiteur VALUES ('0', :nom, :prenom, :login, :mdp, :adresse, :cp, :ville, :dateEmbauche, :tel, :email)";
-		DB::select($req, ['nom'=>$nom, 'prenom'=>$prenom, 'login'=>$login, 'mdp'=>$mdp, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville, 'dateEmbauche'=>$dateEmbauche, 'tel'=>$tel, 'email'=>$email,]);
+		$req = "INSERT INTO visiteur  (id, nom, prenom, adresse, cp, ville, dateEmbauche, tel, email) VALUES (:idVisiteur, :nom, :prenom, :adresse, :cp, :ville, :dateEmbauche, :tel, :email)";
+		DB::insert($req, ['idVisiteur'=>$idVisiteur, 'nom'=>$nom, 'prenom'=>$prenom, 'adresse'=>$adresse, 'cp'=>$cp, 'ville'=>$ville, 'dateEmbauche'=>$dateEmbauche, 'tel'=>$tel, 'email'=>$email,]);
+	}
+
+	public function creerTravailler($idVisiteur, $dateEmbauche, $tra_reg)
+	{
+		$req = "INSERT INTO travailler VALUES (:idVisiteur, :tra_date, :tra_reg, 'Visiteur')";
+		DB::insert($req, ['idVisiteur'=>$idVisiteur, 'tra_date'=>$dateEmbauche, 'tra_reg'=>$tra_reg]);
 	}
 	//public function modifEtat($idVisiteur,$newEtat){
 		//$req = "update idEtat set idEtat = VA";

@@ -25,6 +25,7 @@ class creerVisiteurController extends Controller
      */
     public function verifVisiteur(Request $request){
         $this->validate($request,[
+            'id'=>'bail|required',
             'adresse'=>'bail|required',
             'cp'=>'bail|required|digits:5',
             'ville'=>'bail|required|between:2,30|alpha',
@@ -32,17 +33,14 @@ class creerVisiteurController extends Controller
             'prenom'=>'bail|required',
             'nom'=>'bail|required',
             'tel'=>'bail|required|digits:10',
-            'login'=>'bail|required',
-            'mdp'=>'bail|required',
             'dateEmbauche'=>'bail|required',
 
         ]);
         // récuperer les données pour mettre à jour la base
+        $idVisiteur = $request->input('id');
         $email = $request->input('email');
         $tel = $request->input('tel');
         $dateEmbauche = $request->input('dateEmbauche');
-        $login = $request->input('login');
-        $mdp = $request->input('mdp');
         $prenom = $request->input('prenom');
         $nom = $request->input('nom');
         $adresse = $request->input('adresse');
@@ -50,7 +48,7 @@ class creerVisiteurController extends Controller
         $ville = $request->input('ville');
         $idVisiteur = Session::get('id');
         $gsbFrais = new GsbFrais();
-        $info = $gsbFrais->creerVisiteur($nom, $prenom, $login, $mdp, $adresse, $cp, $ville, $dateEmbauche, $tel, $email);
+        $info = $gsbFrais->creerVisiteur($idVisiteur, $nom, $prenom, $adresse, $cp, $ville, $dateEmbauche, $tel, $email);
         //confirmer la mise à jour
         return view ('creerVisiteur');
 
