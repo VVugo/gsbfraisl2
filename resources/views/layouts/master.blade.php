@@ -44,9 +44,9 @@
                             <li><a href="{{ url('/getListeFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Voir Frais</a></li>
                             <li><a href="{{ url('/modifInfos') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Modifier les informations</a></li>
                             <li><a href="{{ url('/modifMdp') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Modifier le mot de passe</a></li>
-                            @if (Session::get('role') == 'Déléguer' || Session::get('role') == 'Responsable' )
-                                <li><a href="{{ url('/validerFicheFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche Frais</a></li>
-                                <li><a href="{{ url('/suivreFicheFrais') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Suivre Fiche Frais</a></li>
+                            @if (Session::get('role') == 'Délégué' || Session::get('role') == 'Responsable' )
+                                <li><a href="{{ url('/getListeFraisCloture') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Valider Fiche Frais</a></li>
+                                <li><a href="{{ url('/getListeFraisValide') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Suivre Fiche Frais</a></li>
                             @endIf
                             @if (Session::get('role') == 'Responsable' )
                                 <li><a href="{{ url('/creerVisiteur') }}" data-toggle="collapse" data-target=".navbar-collapse.in">Créer un visiteur</a></li>
